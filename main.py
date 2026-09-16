@@ -25,14 +25,16 @@ body:before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;z-inde
 .search-box{background:rgba(30,30,30,0.8);display:flex;align-items:center;padding:5px 15px;border-radius:30px;margin-bottom:20px;border:1px solid #333}
 .search-box input{flex:1;background:transparent;border:none;color:white;outline:none;padding:12px 5px;font-size:16px}
 .search-box button{background:#ff0055;border:none;color:white;width:42px;height:42px;border-radius:50%;cursor:pointer}
-input, select{width:90%;padding:12px;margin:8px 0;border-radius:12px;border:1px solid #333;background:#222;color:white;outline:none}
+input, select{width:92%;padding:12px;margin:8px 0;border-radius:12px;border:1px solid #333;background:#222;color:white;outline:none}
 .btn{background:linear-gradient(135deg,#ff0055,#7c00ff);border:none;color:white;padding:13px 20px;border-radius:12px;width:92%;cursor:pointer;margin-top:10px;font-weight:bold}
 .box{background:#1a1a1a;padding:15px;border-radius:15px;margin-top:15px;text-align:left;border:1px solid #333;word-break:break-all}
-.tool-menu{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px}
+.tool-menu{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none}
 .tool-menu button{white-space:nowrap;background:#222;border:1px solid #333;color:white;padding:8px 14px;border-radius:20px}
 .tool-menu button.active{background:#ff0055}
-#fakeChatPreview{background:#0a3320 url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');padding:10px;border-radius:10px;min-height:200px;text-align:left}
-.chat-msg{background:white;color:black;padding:8px 12px;border-radius:8px;margin:8px 0;max-width:75%;width:fit-content}
+#fakeChatPreview{background:#0a3320 url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');padding:10px;border-radius:10px;min-height:300px;text-align:left;display:flex;flex-direction:column}
+.chat-msg{padding:8px 12px;border-radius:8px;margin:6px 0;max-width:75%;width:fit-content;font-size:14px}
+.chat-msg.receive{background:white;color:black;align-self:flex-start;border-top-left-radius:0}
+.chat-msg.sent{background:#dcf8c6;color:black;align-self:flex-end;border-top-right-radius:0}
 </style></head>
 <body>
 <h2 style="margin:15px 0">KUNAL PRO HUB</h2>
@@ -66,7 +68,7 @@ input, select{width:90%;padding:12px;margin:8px 0;border-radius:12px;border:1px 
 </div>
 
 <div id="instaTool" class="tool-page">
-<h3>Insta Video Downloader</h3>
+<h3>Insta Video Downloader - WORKING</h3>
 <input id="vlink" placeholder="Reels link paste kar">
 <button class="btn" onclick="downloadInsta()">Download Karo</button>
 <div id="instaResult" class="box" style="display:none"></div>
@@ -82,16 +84,21 @@ input, select{width:90%;padding:12px;margin:8px 0;border-radius:12px;border:1px 
 <div id="fontTool" class="tool-page" style="display:none">
 <h3>Font Style Generator</h3>
 <input id="fontInput" placeholder="Apna naam likh" oninput="genFonts()">
-<div id="fontResult" class="box"></div>
+<div id="fontResult" class="box">Upar likh bhai</div>
 </div>
 
 <div id="fakeTool" class="tool-page" style="display:none">
 <h3>Fake WhatsApp Chat</h3>
 <input id="fakeName" placeholder="Naam likh (Ex: Jaan)">
+<select id="msgType">
+<option value="receive">Received - White Left</option>
+<option value="sent">Sent - Green Right</option>
+</select>
 <input id="fakeMsg" placeholder="Message likh">
 <button class="btn" onclick="addFakeMsg()">Message Add Karo</button>
 <button class="btn" style="background:#333" onclick="downloadFake()">Screenshot Download</button>
-<div id="fakeChatPreview" style="margin-top:15px"><div style="color:white;text-align:center;font-size:12px" id="fakeHeader">Jaan</div></div>
+<button class="btn" style="background:#900" onclick="document.getElementById('fakeChatPreview').innerHTML='<div style=color:white;text-align:center;font-size:12px;background:rgba(0,0,0,0.4);padding:5px;border-radius:10px id=fakeHeader>Jaan</div>'">Clear Chat</button>
+<div id="fakeChatPreview" style="margin-top:15px"><div style="color:white;text-align:center;font-size:12px;background:rgba(0,0,0,0.4);padding:5px;border-radius:10px" id="fakeHeader">Jaan</div></div>
 </div>
 
 </div>
@@ -122,7 +129,7 @@ async function downloadInsta(){
   let r=await fetch('/api/insta?url='+encodeURIComponent(link));
   let data=await r.json();
   if(data.error){resDiv.innerHTML='❌ '+data.error;return;}
-  resDiv.innerHTML='<a href="'+data.video_url+'" target="_blank" style="color:#25D366;font-weight:bold">👉 DOWNLOAD KARO</a><br><br><video src="'+data.video_url+'" controls style="width:100%;border-radius:12px"></video>';
+  resDiv.innerHTML='<a href="'+data.video_url+'" target="_blank" style="color:#25D366;font-weight:bold;font-size:18px">👉 DOWNLOAD KARO</a><br><br><video src="'+data.video_url+'" controls style="width:100%;border-radius:12px"></video>';
  }catch(e){resDiv.innerHTML='❌ Error';}
 }
 async function searchYT(){
@@ -135,31 +142,29 @@ async function searchYT(){
  if(data.error){res.innerHTML=data.error;return;}
  let html='';
  data.videos.forEach(v=>{
-  html+=`<div style="margin-bottom:12px;border-bottom:1px solid #333;padding-bottom:8px">
-  <img src="${v.thumb}" style="width:100%;border-radius:10px"><br>
-  <b>${v.title}</b><br>
-  <a href="${v.url}" target="_blank" style="color:#ff0055">YouTube Pe Dekho</a> | <a href="/api/insta?url=${encodeURIComponent(v.url)}" target="_blank" style="color:#25D366">Download</a>
-  </div>`;
+  html+=`<div style="margin-bottom:12px;border-bottom:1px solid #333;padding-bottom:8px"><img src="${v.thumb}" style="width:100%;border-radius:10px"><br><b>${v.title}</b><br><a href="${v.url}" target="_blank" style="color:#ff0055">Watch</a> | <a href="${v.url}" target="_blank" style="color:#25D366" onclick="document.getElementById('vlink').value='${v.url}';openTool('instaTool',document.querySelector('.tool-menu button'));downloadInsta();return false;">Download</a></div>`;
  });
  res.innerHTML=html;
 }
 const fonts={
  bold: t=>t.split('').map(c=>{let m={"a":"𝐚","b":"𝐛","c":"𝐜","d":"𝐝","e":"𝐞","f":"𝐟","g":"𝐠","h":"𝐡","i":"𝐢","j":"𝐣","k":"𝐤","l":"𝐥","m":"𝐦","n":"𝐧","o":"𝐨","p":"𝐩","q":"𝐪","r":"𝐫","s":"𝐬","t":"𝐭","u":"𝐮","v":"𝐯","w":"𝐰","x":"𝐱","y":"𝐲","z":"𝐳"};return m[c.toLowerCase()]||c}).join(''),
  fancy: t=>t.split('').map(c=>{let m={"a":"𝓪","b":"𝓫","c":"𝓬","d":"𝓭","e":"𝓮","f":"𝓯","g":"𝓰","h":"𝓱","i":"𝓲","j":"𝓳","k":"𝓴","l":"𝓵","m":"𝓶","n":"𝓷","o":"𝓸","p":"𝓹","q":"𝓺","r":"𝓻","s":"𝓼","t":"𝓽","u":"𝓾","v":"𝓿","w":"𝔀","x":"𝔁","y":"𝔂","z":"𝔃"};return m[c.toLowerCase()]||c}).join(''),
- cursive: t=> "✨ "+t+" ✨"
 };
 function genFonts(){
  let t=document.getElementById('fontInput').value;
  let r=document.getElementById('fontResult');
  if(!t){r.innerHTML='Upar likh bhai';return;}
- r.innerHTML=`<div style="padding:8px">𝐁𝐨𝐥𝐝: ${fonts.bold(t)}</div><div style="padding:8px">𝓕𝓪𝓷𝓬𝔂: ${fonts.fancy(t)}</div><div style="padding:8px">Cursive: ${fonts.cursive(t)}</div>`;
+ r.innerHTML=`<div style="padding:8px">𝐁𝐨𝐥𝐝: ${fonts.bold(t)}</div><div style="padding:8px">𝓕𝓪𝓷𝓬𝔂: ${fonts.fancy(t)}</div><div style="padding:8px">✨ ${t} ✨</div>`;
 }
 function addFakeMsg(){
  let name=document.getElementById('fakeName').value||'Jaan';
  let msg=document.getElementById('fakeMsg').value;
+ let type=document.getElementById('msgType').value;
  if(!msg)return;
  document.getElementById('fakeHeader').innerText=name;
- let div=document.createElement('div');div.className='chat-msg';div.innerText=msg;
+ let div=document.createElement('div');
+ div.className='chat-msg '+type;
+ div.innerText=msg + ' ' + new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
  document.getElementById('fakeChatPreview').appendChild(div);
  document.getElementById('fakeMsg').value='';
 }
