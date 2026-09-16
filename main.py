@@ -56,13 +56,16 @@ input,select{width:90%;padding:12px;margin:8px 0;border-radius:12px;border:1px s
 </div>
 
 <div id="tools" class="page">
-<h3>Video Downloader - FIXED</h3>
-<input id="vlink" placeholder="YouTube / Insta link">
+<h3>Insta Video Downloader - FIXED</h3>
+<input id="vlink" placeholder="Instagram Reels / Post link">
 <button class="btn" onclick="downloadVideo()">Download Karo</button>
+<p style="font-size:12px;color:#aaa;margin-top:8px">Note: YouTube download Render pe block hai, isliye hata diya hai.</p>
+
 <h3 style="margin-top:25px">Insta DP Viewer</h3>
-<input id="instaUser" placeholder="Username">
+<input id="instaUser" placeholder="Username ( @ ke bina )">
 <button class="btn" onclick="viewDP()">HD DP Dekho</button>
 <div id="dpResult" class="box" style="display:none"></div>
+
 <h3 style="margin-top:25px">Stylish Name Maker</h3>
 <input id="sname" placeholder="Naam likho" oninput="makeStylish()">
 <div id="styleResult" class="box"></div>
@@ -70,7 +73,7 @@ input,select{width:90%;padding:12px;margin:8px 0;border-radius:12px;border:1px s
 
 <div id="fake" class="page">
 <h3>Fake Chat Maker</h3>
-<input id="fmsg" placeholder="Message">
+<input id="fmsg" placeholder="Message likho">
 <select id="ftype"><option>Sent</option><option>Received</option></select>
 <button class="btn" onclick="addFakeMsg()">Add Karo</button>
 <button class="btn" style="background:#333" onclick="document.getElementById('chatArea').innerHTML=''">Clear</button>
@@ -93,18 +96,10 @@ else{window.location.href='https://www.google.com/search?q='+encodeURIComponent(
 function downloadVideo(){
  let link=document.getElementById('vlink').value.trim();
  if(!link){alert('Link daal bhai');return;}
- let ytId='';
- try{
-   let url=new URL(link);
-   if(url.hostname.includes('youtu.be')) ytId=url.pathname.slice(1);
-   else ytId=url.searchParams.get('v');
- }catch(e){}
- if(link.includes('youtu') && ytId){
-   window.open('https://www.y2mate.is/youtube/'+ytId,'_blank');
- } else if(link.includes('youtu')){
-   window.open('https://10downloader.com/en49/download?v='+encodeURIComponent(link),'_blank');
+ if(link.includes('instagram.com') || link.includes('instagr.am')){
+   window.open('https://saveinsta.app/en?url='+encodeURIComponent(link), '_blank');
  } else {
-   window.open('https://snapinsta.app/download?url='+encodeURIComponent(link),'_blank');
+   alert('Bhai abhi sirf Instagram link kaam karega. YouTube wala YouTube ne block kar diya hai isliye hata diya.');
  }
 }
 function viewDP(){
