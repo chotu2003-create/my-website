@@ -54,8 +54,10 @@ input, select{width:92%;padding:12px;margin:8px 0;border-radius:12px;border:1px 
 <a class="card" href="https://www.facebook.com"><i class="fab fa-facebook" style="color:#1877F2"></i>Facebook</a>
 <a class="card" href="https://web.whatsapp.com"><i class="fab fa-whatsapp" style="color:#25D366"></i>WhatsApp</a>
 <a class="card" href="https://www.youtube.com"><i class="fab fa-youtube" style="color:red"></i>YouTube</a>
-<a class="card" href="https://x.com"><i class="fab fa-twitter" style="color:#1DA1F2"></i>X</a>
+<a class="card" href="https://x.com"><i class="fab fa-twitter" style="color:#1DA1F2"></i>X / Twitter</a>
 <a class="card" href="https://web.telegram.org"><i class="fab fa-telegram" style="color:#26A5E4"></i>Telegram</a>
+<a class="card" href="https://www.snapchat.com"><i class="fab fa-snapchat" style="color:#FFFC00"></i>Snapchat</a>
+<a class="card" href="https://www.tiktok.com"><i class="fab fa-tiktok" style="color:white"></i>TikTok</a>
 </div>
 </div>
 
@@ -68,14 +70,15 @@ input, select{width:92%;padding:12px;margin:8px 0;border-radius:12px;border:1px 
 </div>
 
 <div id="instaTool" class="tool-page">
-<h3>Insta Video Downloader - WORKING</h3>
-<input id="vlink" placeholder="Reels link paste kar">
+<h3>All Video Downloader</h3>
+<p style="font-size:12px;color:#aaa">Insta / YT / TikTok / FB sab chalega</p>
+<input id="vlink" placeholder="Koi bhi link paste kar">
 <button class="btn" onclick="downloadInsta()">Download Karo</button>
 <div id="instaResult" class="box" style="display:none"></div>
 </div>
 
 <div id="ytTool" class="tool-page" style="display:none">
-<h3>YouTube Video Search</h3>
+<h3>YouTube Search - FIXED</h3>
 <input id="ytQuery" placeholder="Gaana / video naam likh">
 <button class="btn" onclick="searchYT()">Search Karo</button>
 <div id="ytResult" class="box" style="display:none"></div>
@@ -88,7 +91,7 @@ input, select{width:92%;padding:12px;margin:8px 0;border-radius:12px;border:1px 
 </div>
 
 <div id="fakeTool" class="tool-page" style="display:none">
-<h3>Fake WhatsApp Chat</h3>
+<h3>Fake WhatsApp Chat - Sent + Receive</h3>
 <input id="fakeName" placeholder="Naam likh (Ex: Jaan)">
 <select id="msgType">
 <option value="receive">Received - White Left</option>
@@ -97,7 +100,7 @@ input, select{width:92%;padding:12px;margin:8px 0;border-radius:12px;border:1px 
 <input id="fakeMsg" placeholder="Message likh">
 <button class="btn" onclick="addFakeMsg()">Message Add Karo</button>
 <button class="btn" style="background:#333" onclick="downloadFake()">Screenshot Download</button>
-<button class="btn" style="background:#900" onclick="document.getElementById('fakeChatPreview').innerHTML='<div style=color:white;text-align:center;font-size:12px;background:rgba(0,0,0,0.4);padding:5px;border-radius:10px id=fakeHeader>Jaan</div>'">Clear Chat</button>
+<button class="btn" style="background:#900" onclick="clearFake()">Clear Chat</button>
 <div id="fakeChatPreview" style="margin-top:15px"><div style="color:white;text-align:center;font-size:12px;background:rgba(0,0,0,0.4);padding:5px;border-radius:10px" id="fakeHeader">Jaan</div></div>
 </div>
 
@@ -126,25 +129,27 @@ async function downloadInsta(){
  if(!link){alert('Link daal');return;}
  resDiv.style.display='block';resDiv.innerHTML='⏳ Nikaal raha hu...';
  try{
-  let r=await fetch('/api/insta?url='+encodeURIComponent(link));
+  let r=await fetch('/api/dl?url='+encodeURIComponent(link));
   let data=await r.json();
   if(data.error){resDiv.innerHTML='❌ '+data.error;return;}
   resDiv.innerHTML='<a href="'+data.video_url+'" target="_blank" style="color:#25D366;font-weight:bold;font-size:18px">👉 DOWNLOAD KARO</a><br><br><video src="'+data.video_url+'" controls style="width:100%;border-radius:12px"></video>';
- }catch(e){resDiv.innerHTML='❌ Error';}
+ }catch(e){resDiv.innerHTML='❌ Error - Link sahi daal';}
 }
 async function searchYT(){
  let q=document.getElementById('ytQuery').value.trim();
  let res=document.getElementById('ytResult');
- if(!q)return;
+ if(!q){alert('Kuch likh');return;}
  res.style.display='block';res.innerHTML='⏳ Search kar raha hu...';
- let r=await fetch('/api/ytsearch?q='+encodeURIComponent(q));
- let data=await r.json();
- if(data.error){res.innerHTML=data.error;return;}
- let html='';
- data.videos.forEach(v=>{
-  html+=`<div style="margin-bottom:12px;border-bottom:1px solid #333;padding-bottom:8px"><img src="${v.thumb}" style="width:100%;border-radius:10px"><br><b>${v.title}</b><br><a href="${v.url}" target="_blank" style="color:#ff0055">Watch</a> | <a href="${v.url}" target="_blank" style="color:#25D366" onclick="document.getElementById('vlink').value='${v.url}';openTool('instaTool',document.querySelector('.tool-menu button'));downloadInsta();return false;">Download</a></div>`;
- });
- res.innerHTML=html;
+ try{
+  let r=await fetch('/api/ytsearch?q='+encodeURIComponent(q));
+  let data=await r.json();
+  if(data.error){res.innerHTML='❌ '+data.error;return;}
+  let html='';
+  data.videos.forEach(v=>{
+   html+=`<div style="margin-bottom:14px;border-bottom:1px solid #333;padding-bottom:10px"><img src="${v.thumb}" style="width:100%;border-radius:10px"><br><b>${v.title}</b><br><a href="${v.url}" target="_blank" style="color:#ff0055">▶️ Watch</a> <a href="#" style="color:#25D366;margin-left:10px" onclick="document.getElementById('vlink').value='${v.url}';openTab('tools',document.querySelectorAll('.tabs button')[1]);openTool('instaTool',document.querySelector('.tool-menu button'));downloadInsta();return false;">⬇️ Download</a></div>`;
+  });
+  res.innerHTML=html || 'Kuch nahi mila';
+ }catch(e){res.innerHTML='❌ Error';}
 }
 const fonts={
  bold: t=>t.split('').map(c=>{let m={"a":"𝐚","b":"𝐛","c":"𝐜","d":"𝐝","e":"𝐞","f":"𝐟","g":"𝐠","h":"𝐡","i":"𝐢","j":"𝐣","k":"𝐤","l":"𝐥","m":"𝐦","n":"𝐧","o":"𝐨","p":"𝐩","q":"𝐪","r":"𝐫","s":"𝐬","t":"𝐭","u":"𝐮","v":"𝐯","w":"𝐰","x":"𝐱","y":"𝐲","z":"𝐳"};return m[c.toLowerCase()]||c}).join(''),
@@ -154,7 +159,7 @@ function genFonts(){
  let t=document.getElementById('fontInput').value;
  let r=document.getElementById('fontResult');
  if(!t){r.innerHTML='Upar likh bhai';return;}
- r.innerHTML=`<div style="padding:8px">𝐁𝐨𝐥𝐝: ${fonts.bold(t)}</div><div style="padding:8px">𝓕𝓪𝓷𝓬𝔂: ${fonts.fancy(t)}</div><div style="padding:8px">✨ ${t} ✨</div>`;
+ r.innerHTML=`<div style="padding:8px">𝐁𝐨𝐥𝐝: ${fonts.bold(t)}</div><div style="padding:8px">𝓕𝓪𝓷𝓬𝔂: ${fonts.fancy(t)}</div><div style="padding:8px">✨ ${t} ✨</div><div style="padding:8px">🔥 ${t.toUpperCase()} 🔥</div>`;
 }
 function addFakeMsg(){
  let name=document.getElementById('fakeName').value||'Jaan';
@@ -168,6 +173,9 @@ function addFakeMsg(){
  document.getElementById('fakeChatPreview').appendChild(div);
  document.getElementById('fakeMsg').value='';
 }
+function clearFake(){
+ document.getElementById('fakeChatPreview').innerHTML='<div style="color:white;text-align:center;font-size:12px;background:rgba(0,0,0,0.4);padding:5px;border-radius:10px" id="fakeHeader">Jaan</div>';
+}
 function downloadFake(){
  html2canvas(document.getElementById('fakeChatPreview')).then(c=>{
   let a=document.createElement('a');a.download='fake-chat.png';a.href=c.toDataURL();a.click();
@@ -177,16 +185,19 @@ function downloadFake(){
 </body></html>
 """
 
+@app.route('/api/dl')
 @app.route('/api/insta')
-def insta_api():
+def dl_api():
     url=request.args.get('url')
     if not url: return jsonify({"error":"Link de"}),400
     try:
-        ydl_opts={'quiet':True,'skip_download':True}
+        ydl_opts={'quiet':True,'skip_download':True,'noplaylist':True}
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info=ydl.extract_info(url,download=False)
             if 'entries' in info: info=info['entries'][0]
-            vurl=info.get('url') or info['formats'][-1]['url']
+            vurl=info.get('url')
+            if not vurl:
+                vurl=info['formats'][-1]['url']
             return jsonify({"video_url":vurl})
     except Exception as e:
         return jsonify({"error":str(e)}),500
@@ -196,15 +207,17 @@ def ytsearch():
     q=request.args.get('q')
     if not q: return jsonify({"error":"Query de"}),400
     try:
-        ydl_opts={'quiet':True,'skip_download':True}
+        # FIXED SEARCH - ytsearch ke liye alag options
+        ydl_opts={'quiet':True,'skip_download':True,'extract_flat':True}
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            info=ydl.extract_info(f"ytsearch5:{q}",download=False)
+            info=ydl.extract_info(f"ytsearch8:{q}",download=False)
             vids=[]
-            for e in info['entries']:
-                vids.append({"title":e.get('title'),"url":e.get('webpage_url'),"thumb":e.get('thumbnail')})
+            for e in info.get('entries',[]):
+                if e:
+                    vids.append({"title":e.get('title'),"url":e.get('url') or f"https://www.youtube.com/watch?v={e.get('id')}", "thumb":e.get('thumbnails',[{}])[0].get('url') if e.get('thumbnails') else f"https://i.ytimg.com/vi/{e.get('id')}/hqdefault.jpg"})
             return jsonify({"videos":vids})
     except Exception as e:
-        return jsonify({"error":str(e)}),500
+        return jsonify({"error":"YT Search Error: "+str(e)}),500
 
 if __name__=="__main__":
     app.run(host="0.0.0.0",port=int(os.environ.get("PORT",10000)))
