@@ -5,7 +5,14 @@ app = Flask(__name__)
 @app.route('/')
 def home():
     return """<!DOCTYPE html>
-<html>
+<a class="card" href="https://www.instagram.com"><i class="fab fa-instagram"></i>Instagram</a>
+<a class="card" href="https://www.facebook.com"><i class="fab fa-facebook"></i>Facebook</a>
+<a class="card" href="https://web.whatsapp.com"><i class="fab fa-whatsapp"></i>WhatsApp</a>
+<a class="card" href="https://www.snapchat.com"><i class="fab fa-snapchat"></i>Snapchat</a>
+<a class="card" href="https://www.youtube.com"><i class="fab fa-youtube"></i>YouTube</a>
+<a class="card" href="https://x.com"><i class="fab fa-twitter"></i>Twitter / X</a>
+<a class="card" href="https://web.telegram.org"><i class="fab fa-telegram"></i>Telegram</a>
+<a class="card" href="https://www.tiktok.com"><i class="fab fa-tiktok"></i>TikTok</a>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Social Hub</title>
