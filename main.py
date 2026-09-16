@@ -50,14 +50,14 @@ input, select{width:92%;padding:12px;margin:8px 0;border-radius:12px;border:1px 
 <button onclick="doSearch()"><i class="fas fa-search"></i></button>
 </div>
 <div class="grid">
-<a class="card" href="https://www.instagram.com"><i class="fab fa-instagram" style="color:#E1306C"></i>Instagram</a>
-<a class="card" href="https://www.facebook.com"><i class="fab fa-facebook" style="color:#1877F2"></i>Facebook</a>
-<a class="card" href="https://web.whatsapp.com"><i class="fab fa-whatsapp" style="color:#25D366"></i>WhatsApp</a>
-<a class="card" href="https://www.youtube.com"><i class="fab fa-youtube" style="color:red"></i>YouTube</a>
-<a class="card" href="https://x.com"><i class="fab fa-twitter" style="color:#1DA1F2"></i>X / Twitter</a>
-<a class="card" href="https://web.telegram.org"><i class="fab fa-telegram" style="color:#26A5E4"></i>Telegram</a>
-<a class="card" href="https://www.snapchat.com"><i class="fab fa-snapchat" style="color:#FFFC00"></i>Snapchat</a>
-<a class="card" href="https://www.tiktok.com"><i class="fab fa-tiktok" style="color:white"></i>TikTok</a>
+<a class="card" href="https://www.instagram.com" target="_blank" rel="noopener"><i class="fab fa-instagram" style="color:#E1306C"></i>Instagram</a>
+<a class="card" href="https://www.facebook.com" target="_blank" rel="noopener"><i class="fab fa-facebook" style="color:#1877F2"></i>Facebook</a>
+<a class="card" href="https://web.whatsapp.com" target="_blank" rel="noopener"><i class="fab fa-whatsapp" style="color:#25D366"></i>WhatsApp</a>
+<a class="card" href="https://www.youtube.com" target="_blank" rel="noopener"><i class="fab fa-youtube" style="color:red"></i>YouTube</a>
+<a class="card" href="https://x.com" target="_blank" rel="noopener"><i class="fab fa-twitter" style="color:#1DA1F2"></i>X / Twitter</a>
+<a class="card" href="https://web.telegram.org" target="_blank" rel="noopener"><i class="fab fa-telegram" style="color:#26A5E4"></i>Telegram</a>
+<a class="card" href="https://www.snapchat.com" target="_blank" rel="noopener"><i class="fab fa-snapchat" style="color:#FFFC00"></i>Snapchat</a>
+<a class="card" href="https://www.tiktok.com" target="_blank" rel="noopener"><i class="fab fa-tiktok" style="color:white"></i>TikTok</a>
 </div>
 </div>
 
